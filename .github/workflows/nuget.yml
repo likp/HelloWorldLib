@@ -25,6 +25,9 @@ jobs:
       run: msbuild /p:Configuration=Release
 
     - name: Depoly to Nuget
-      run: Get-ChildItem -Recurse -Filter *.nupkg | Foreach-Object {Invoke-Command nuget push setapikey $nuget_api_key $_.FullName}
+    - run: |
+           $package = Get-ChildItem -Recurse -Filter *.nupkg
+           nuget push $package $nuget_api_key
       env:
         nuget_api_key: ${{ secrets.NUGET_API_KEY }}
+        
